@@ -42,7 +42,7 @@
 ** Computer running a unix operating system
 *** Linux 
 - Install a debian linux distribution on a PC. I recommend installing Ubuntu. Notes on Canvas for single (linux) or dual-boot (Windows+linux).
-- Install class software by running an apt installer script. Notes and video on Canvas.
+- Install class software by running an apt installer script. Notes on Canvas.
 *** Mac OSX
 - Mac OSX is a unix operating system -- access it through the terminal application (notes on Canvas)
-- Install Homebrew package manager and run brew installer script. Notes and video on Canvas.
+- Install Homebrew package manager and run brew installer script. Notes on Canvas.
