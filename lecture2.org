@@ -1,0 +1,35 @@
+#+TITLE: EVE 231: Principles of Biological Data Analysis (Fall 2019)
+#+AUTHOR: Bruce Rannala
+#+DATE: 09-26-2019
+#+OPTIONS: H:2 toc:t num:t date:nil
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [xetex]
+#+LATEX_HEADER: \usepackage{fontspec}
+#+LATEX_HEADER: \setsansfont{Montserrat Regular}
+#+BEAMER_THEME: Montpellier
+#+BEAMER_COLOR_THEME: dove
+#+BEAMER_FONT_THEME: professionalfonts
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col)
+
+* UNIX
+** Early History
+- 1969. Ken Thompson, Dennis Ritchie and others started developing UNIX on the "little-used PDP-7 in a corner" at Bell Labs
+#+ATTR_LATEX: :width 0.25\textwidth :placement {r}{\textwidth}                                                                                                                                      
+[[./figs/ThompsonRitchieatPDP-11.jpg]] 
+- 1985. Free Software Foundation (GNU) founded by Richard Stallman
+- 1988. Portable Operating System Interface (POSIX) standards for UNIX introduced
+** Early History (cont)
+- 1988 Free Software Foundation creates Copyleft Licence GNU General Public License (GNU GPL)
+- GPL guarantees end users the freedom to run, study, share and modify the software
+- GNU = ``GNUs Not Unix'' software is developed by the FSF and includes GCC compiler, Emacs and others
+** Recent History
+- 1991. Linus Torvalds completes first Linux kernel.
+#+ATTR_LATEX: :width 0.15\textwidth :placement {r}{\textwidth}                                                                                                                                      
+[[./figs/Linus_Torvalds.jpeg]] 
+- 1992/1993 GNU software embedded into Linux to create GNU/Linux
+- 1994 Slackware Linux distribution released
+- 2000 Mac OS X public beta "Kodiak" released
+** UNIX Philosophy
+- Write programs that do one thing and do it well
+- Write programs to work together
+- Write programs to handle text streams, because that is a universal interface
