@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>gittutorial.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="eve-231-lecture-2-tuesday-oct-1-2019">EVE 231 Lecture 2 (Tuesday Oct 1, 2019)</h1>
+<h2 id="using-git-to-maintain-your-files">Using Git to Maintain Your Files</h2>
+<p>The git program allows you to retain copies of all previous and current versions of your files without any clutter in your project directory. You can easily go back to earlier versions of your project if you accidentally deleted a file that you now need, or if you just want to check an earlier version of a file. Git allows you to keep a minimalist folder containing only the current files, but also have the security of knowing that all previous versions are still available should you need them. Git does this in an efficient way -- only recording a record of the differences from the previous versions at each commit (much like having a linked list of output from the UNIX <code>diff</code> command). It is also possible to maintain a copy of your repository on a remote machine for backup purposes.</p>
+<h3 id="creating-a-git-repository">Creating a Git Repository</h3>
+<p>To start using git first create a directory for your project files</p>
+<pre><code>mkdir myproject
+cd myproject</code></pre>
+<p>then create a new git repository in this directory</p>
+<pre><code>git init</code></pre>
+<p>This has created a git revision control system. All the files used by git are in a hidden subdirectory called .git and can be viewed using</p>
+<pre><code>tree .git</code></pre>
+<p>The <code>.git</code> directory is a <em>hidden directory</em>. In UNIX any file or directory that begins with a . is not shown by the <code>ls</code> command. To see the hidden directories use <code>ls -a</code>. If you want to change the directory back to a non-git directory simply delete the subdirectory .git using a command like <code>rm -Rf .git</code>. Here the <code>-R</code> option tells <code>rm</code> to recursively remove the subdirectory and all the files within it (don't delete the directory yet, we still need it for the exercise). By the way, NEVER use the command <code>rm -Rf /</code> as root user or you will be a sad puppy.</p>
+<h3 id="adding-content-to-the-repository">Adding Content to the Repository</h3>
+<p>We will use the vintage <code>ed</code> editor to add a file to the directory</p>
+<pre><code>ed
+a
+this is a test
+.
+w test.txt
+q</code></pre>
+<p>Now try the command</p>
+<pre><code>git status</code></pre>
+<p>This command tells you the status of the git repository. By default the files you place in the directory are not tracked by the git and must be added to the index of the repository, otherwise they are ignored by git -- this process of adding files to the repository list is known as <em>staging</em> the files. The command</p>
+<pre><code>git add test.txt</code></pre>
+<p>adds the file you created to the repository. If you have many new files you can add them all use the single command</p>
+<pre><code>git add --all</code></pre>
+<p>Now try <code>git status</code> again and you will see that your file has been <em>staged</em>.</p>
+<h3 id="making-a-commit">Making a Commit</h3>
+<p>To save the file as a permanent part of the git tracking history you must now commit it. Each commit becomes a node in the permanent history of the repository. To commit the <code>test.txt</code> file use the command</p>
+<pre><code>git commit test.txt -m &quot;first commit&quot;</code></pre>
+<p>where the comment in parentheses is a human-readable explanation of the repository changes that becomes part of the commit records. If you have multiple tracked files that have changed you can commit them all in one go using</p>
+<pre><code>git commit -a -m &quot;many files have changed&quot;</code></pre>
+<p>The advantage of committing individual files is that you can have individual comments associated with each commit. Also you can retrieve the previous file versions in a more fine-grain manner. We can now safely delete the file <code>test.txt</code> from the repository knowing that we have a permanent copy in the git chain. To delete the file use the command</p>
+<pre><code>rm test.txt</code></pre>
+<p>Now commit the change to the repository</p>
+<pre><code>git commit -a -m &quot;removed test.txt&quot;</code></pre>
+<p>To see a history of your commits use the command</p>
+<pre><code>git log</code></pre>
+<p>For my repository this produces</p>
+<pre><code>commit 47fc43da87e9651a091cbd9e93df1aa2bfd25e9d (HEAD -&gt; master)
+Author: Bruce &lt;brannala@ucdavis.edu&gt;
+Date:   Sun Sep 22 11:43:17 2019 -0700
+
+    deleted file
+
+commit 5540e2b5a55d63240c9ee23b65e9aa600c5df843
+Author: Bruce &lt;brannala@ucdavis.edu&gt;
+Date:   Sun Sep 22 11:37:33 2019 -0700
+
+    first commit</code></pre>
+<p>The commits are stored as a linked list; each commit has a child that has a link to its parent. The last commit is the current state (HEAD) of the repository and also has the branch name (in this case <code>master</code>) attached to it. There is also a unique 40 digit <em>hash</em> number associated with each commit that identifies it.</p>
+<h3 id="time-travelling-with-git-checkout">Time Travelling with Git Checkout</h3>
+<p>Now that you have a git repository you can return to the state that it was in at any previous commit. The commit is identified by any unique subsequence of it's hash number. To return <em>my</em> repository to the state it was in immediately before the last commit (when I deleted the file) I can use the command</p>
+<pre><code>git checkout 5540e</code></pre>
+<p>Voila! the test.txt file is now present again in the subdirectory. The command will be similar for your repository except that the hash number will be different (unique to your commits). To return to the current (most recent) commit simply type</p>
+<pre><code>git checkout master</code></pre>
+<p>If you are currently editing the files in your git repository and have not yet committed your changes but you want to revert the repository to a prior commit state you can first <em>stash</em> the edited files</p>
+<pre><code>git stash</code></pre>
+<p>This takes you back to the state at the most recent commit (master). You can then use checkout to switch to another commit. When you are done and have switched back to master you can retrieve your stashed file changes using</p>
+<pre><code>git stash pop</code></pre>
+<p>Lets give stash a try. First create a new file using ed</p>
+<pre><code>ed
+a
+test2
+.
+w test2.txt
+q</code></pre>
+<p>and then add the file to the repository</p>
+<pre><code>git add test2.txt</code></pre>
+<p>and stash the changes</p>
+<pre><code>git stash</code></pre>
+<p>Using <code>ls</code> now shows no file <code>test2.txt</code> in the directory. Now pop it back</p>
+<pre><code>git stash pop</code></pre>
+<p>The file is back!</p>
+<h3 id="replicating-repositories-with-git-clone">Replicating Repositories with Git Clone</h3>
+<p>To create a now local copy of a git directory (complete with the commit history) use the <code>git clone</code> command. For example</p>
+<pre><code>cd ../
+mkdir myprojectcopy
+cd myprojectcopy
+git clone ../myproject</code></pre>
+<p>This creates an identical copy of the repository. The <em>origin</em> of the repository is the original repository that was cloned. Often a repository is cloned to make temporary changes to files that will later be deleted. In that case, to get rid of the clone just use <code>rm -Rf</code>. However, sometimes a clone is a <em>working copy</em> of a repository and commits made to that repository need to be added to the origin repository. If the origin repository has not been altered since the clone was created then the changes can be <em>pushed</em> to the origin repository without any conflicts -- this is called a <em>fast-forward</em>. Try creating a new file <code>test3.txt</code> in the cloned repository using the <code>ed</code> editor</p>
+<pre><code>cd myproject
+ed
+a
+a third file
+.
+w test3.txt
+q</code></pre>
+<p>and then add and commit the file</p>
+<pre><code>git add test3.txt
+git commit -a</code></pre>
+<p>The files are now committed in the local repository. If you enter <code>git status</code> you will now see the following</p>
+<pre><code>On branch master
+Your branch is ahead of &#39;origin/master&#39; by 1 commit.
+  (use &quot;git push&quot; to publish your local commits)
+
+nothing to commit, working tree clean</code></pre>
+<p>The message now says that although there is nothing to commit the branch is ahead of <code>origin/master</code>. Git knows that this is a clone and is warning you that it is now ahead of the origin. We will try using the push command to propagate our commits to the remote repository as git recommends</p>
+<pre><code>git push</code></pre>
+<p>Oops. You will now see some error messages. The second to last line of the error message is</p>
+<pre><code>! [remote rejected] master -&gt; master (branch is currently checked out)</code></pre>
+<p>Git is cowardly refusing to push changes because the remote branch <code>origin master</code> is currently checked out by a user (me) and if I have already made changes to the checked out branch the push could make a big mess. The solution is to create a new repository branch on origin and switch to that branch before trying to push the changes from the clone. The solution will be given after the discussion of branches below.</p>
+<h3 id="git-branches">Git Branches</h3>
+<p>Think of a git repository as being like a tree. Trees can have one or more branches. A tree also has a root. The root of the git repository tree is the initial commit. Initially the repository has a single branch and the tip of the branch is called <code>master</code>. When we make a commit a new node is added to the branch, the previous commit node become its parent node and the new node becomes <code>master</code>. It is also possible to create a new branch; in that case the parent of the branch is the last commit made before the branch was created. Two branches now exist and we can make commits to either branch -- each branch has a separate history after the time of the split. It is possible to merge the commits on the branches later if desired but there may be conflicting changes that will need to then be resolved. To create a new branch called <code>new_test</code> and switch the current repository to the new branch use the command</p>
+<pre><code>cd ../../myproject
+git branch new_test
+git checkout new_test</code></pre>
+<p>The command</p>
+<pre><code>git branch</code></pre>
+<p>lists all the current branches. For my repository this produces</p>
+<pre><code>  master
+* new_test</code></pre>
+<p>so there are now two branches <code>master</code> and <code>new_test</code>. The current (active) branch is indicated by an asterisk (in this case <code>new_test</code>). To switch back to the <code>master</code> branch use the command</p>
+<pre><code>git checkout master</code></pre>
+<p>A branch that is not currently checked out can be deleted using the --delete option of the branch command. We can delete the <code>new_test</code> branch using</p>
+<pre><code>git branch --delete new_test</code></pre>
+<p>Be careful, any commits on the branch that have not been merged will be lost when the branch is deleted. It should now be clear how to solve our previous push problem -- create a new branch on <code>origin</code> and switch to it so that the <code>master</code> branch is no longer checked out</p>
+<pre><code>git branch working
+git checkout working</code></pre>
+<p>then go back to the cloned project folder, switch to the <code>master</code> branch and make the push</p>
+<pre><code>cd ../myprojectcopy/myproject
+git checkout master
+git push</code></pre>
+<p>The push should now have been a success and changes you made on the clone have now been propagated to the <code>origin</code> repository.</p>
+<h3 id="merging-git-branches">Merging Git Branches</h3>
+<p>Often it is useful to have at least two branches for each project: one that is the <em>stable</em> branch (often <code>master</code>) which has the currently correct and useable versions of your files and another that is the <em>unstable</em> branch (for example <code>working</code>) where you have the files that you are currently at work on. When the working files are completed and ready for the stable branch you merge them into that branch. If you are the only person working on the project and you always use the <code>working</code> branch for ongoing work and commits then there should be no changes or commits in the <code>master</code> directory since the last merge and therefore merging <code>working</code> into <code>master</code> is easy, it is simply replaying all the changes in <code>working</code> in the branch <code>master</code>. As mentioned earlier this is called a <em>fast-forward</em> in git. We now try making some changes in our new branch of the <code>myproject</code> repository and merging them back into <code>master</code>. Check out the <code>working</code> branch and use ed to create a new file</p>
+<pre><code>git checkout working
+ed
+a
+a fourth file
+.
+w test4.txt
+q
+git add test4.txt
+git commit -a -m &quot;a fourth file was added&quot;</code></pre>
+<p>Now try switching to the <code>master</code> branch and looking at the files</p>
+<pre><code>git checkout master
+ls</code></pre>
+<p>There should be a file in the master branch called <code>test3.txt</code> but the file <code>test4.txt</code> is not present, it is currently only present in the <code>working</code> branch. We now try merging the <code>working</code> branch back into the <code>master</code> branch</p>
+<pre><code>git merge working</code></pre>
+<p>This will produce the output</p>
+<pre><code>Merge made by the &#39;recursive&#39; strategy.
+ test4.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test4.txt</code></pre>
+<p>Now try <code>ls</code> and you will see that <code>test4.txt</code> is part of the <code>master</code> branch. Also try <code>git log</code>. You should see that the merge is listed in the log as well as the commit that was done in branch <code>working</code>. One strategy is to never make direct changes to <code>master</code> and rely on merges to bring your changes into the ``master``` repository. If you try to merge a pair of branches that both include changes to the same files you will have to manually resolve any conflicts that occur in the modified files. We will not go into merge conflict resolution in this course. By following the strategy above you can avoid conflicts entirely.</p>
+<h3 id="remote-repositories">Remote Repositories</h3>
+<p>This tutorial is not quite over. Thus far, everything we have done with our git repositories has been on our local machine. You now have some great skills for file management. You know how to create a repository for your files, add files to the repository, commit your file changes, create one or more working (unstable) branches, merge the unstable branches back into the stable branch, and recover older versions of your work from previous commits. But what if your hard drive fails? You will lose your local git repository and all your work! You do not yet have a backup. It is quite possible to just create an archive of your git directory every evening (using tar for example) and then copy the archive to a remote machine (using sftp for example). That works strategy works, but you will need an account on a machine that allows you to store your data and copying a large tarred git directory every day may be slow (even if the tar archive is compressed). A more efficient strategy would be to use a tool like rsync that is specifically designed to allow incremental backups by synchronizing files between machines. But wouldn't it be better to make incremental backups of just the bits of files that have changed and do that every time you commit your git files so you are sure to have a backup of your current commits always? Yes it would, and git can help you do that (and it can be done for free!) -- the solution is to create a remote repository.</p>
+<p>Recall that when we cloned <code>myproject</code> the <code>origin</code> variable of the clone was the parent repository of the clone. The same thing happens if you create a local repository by cloning a repository on a remote machine. The <code>origin</code> is now the remote machine. That is the simplest way to create a new repository with a remote origin to which changes can be pushed: simply create an empty repository on a remote machine and clone it on your local machine. How do you create a repository on a remote machine for cloning? One easy way is to create a free account on github or bitbucket. Students can apply for a free <a href="https://education.github.com/pack">Github Student Developer Pack</a> that allows an unlimited number of public and private repositories. A free GitHub account normally only allows public repositories. There are also free accounts available on <a href="https://bitbucket.org/product/">bitbucket</a> that allow unlimited private repositories for sharing with up to 5 team members.</p>
+<h3 id="creating-a-remote-repository">Creating a Remote Repository</h3>
+<p>To create your git repository with a remote repository at origin first create an account at a site such as GitHub. Log into your account on a web browser and follow the instructions to create a new empty repository. When the repository has been created you will see a link with a web address that you will copy for cloning. Create a folder for your git repositories then <code>cd</code> to the new folder and type <code>git init</code> to initialize the folder as a repository. Then enter the command <code>git clone &lt;address&gt;</code> where <code>&lt;address&gt;</code> is the repository web address that you copied. This will create a local clone of the repository. Put some files in the repository then commit and push them. To push files to a repository you must have permissions so you will be prompted for a password for your online git account when you push. If it is a private repository you will also be prompted for a password when you clone or pull the repository. Public repositories can be cloned and changes pulled without a password. If you create a new branch for your project called <code>working</code>, check out the branch and commit some changes to it, you need to use the following commands to create the branch on the remote and push the changes</p>
+<pre><code>git push --set-upstream origin working</code></pre>
+<p>The notes and exercises for EVE 231 are on a public repository on github. To clone the repository to your local machine use the command</p>
+<pre><code>git clone https://github.com/brannala/eve231-2019.git</code></pre>
+<p>I will periodically add files to the repository during the course so whenever you want to work with files in the directory you should first get the latest commits by using the command</p>
+<pre><code>git pull</code></pre>
+<p>If you have made changes to files in the directory use stash to store your changes before pulling. Alternatively, you could simply delete the previously cloned directory and clone a new copy.</p>
+<h3 id="exercises">Exercises</h3>
+<p>Create a local git repository on your machine that has a remote <code>origin</code>, copy some of your important files to the repository and commit and push the changes. Then create an unstable working branch of your repository, make some edits, and then commit and push the changes.</p>
+
+</body>
+</html>

@@ -101,6 +101,28 @@ This takes you back to the state at the most recent commit (master). You can the
 ```
 git stash pop
 ```
+Lets give stash a try. First create a new file using ed
+```
+ed
+a
+test2
+.
+w test2.txt
+q
+```
+and then add the file to the repository
+```
+git add test2.txt
+```
+and stash the changes
+```
+git stash
+```
+Using ```ls``` now shows no file ```test2.txt``` in the directory. Now pop it back
+```
+git stash pop
+```
+The file is back!
 
 ### Replicating Repositories with Git Clone
 To create a now local copy of a git directory (complete with the commit history) use the ```git clone``` command. For example
@@ -110,21 +132,31 @@ mkdir myprojectcopy
 cd myprojectcopy
 git clone ../myproject
 ```
-This creates an identical copy of the repository. The *origin* of the repository is the original repository that was cloned. Often a repository is cloned to make temporary changes to files that will later be deleted. In that case, to get rid of the clone just use ```rm -Rf```. However, sometimes a clone is a *working copy* of a repository and commits made to that repository need to be added to the origin repository. If the origin repository has not been altered since the clone was created then the changes can be *pushed* to the origin repository without any conflicts -- this is called a *fast-forward*. Try creating a new file ```test2.txt``` in the cloned repository using the ```ed``` editor
+This creates an identical copy of the repository. The *origin* of the repository is the original repository that was cloned. Often a repository is cloned to make temporary changes to files that will later be deleted. In that case, to get rid of the clone just use ```rm -Rf```. However, sometimes a clone is a *working copy* of a repository and commits made to that repository need to be added to the origin repository. If the origin repository has not been altered since the clone was created then the changes can be *pushed* to the origin repository without any conflicts -- this is called a *fast-forward*. Try creating a new file ```test3.txt``` in the cloned repository using the ```ed``` editor
 ```
+cd myproject
 ed
 a
-a second file
+a third file
 .
-w test2.txt
+w test3.txt
 q
 ```
 and then add and commit the file
 ```
-git add test2.txt
+git add test3.txt
 git commit -a
 ```
-The files are now committed in the local repository and we will use the push command to propagate our commits to the remote repository
+The files are now committed in the local repository. If you enter ```git status``` you will now see the following
+```
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+```
+The message now says that although there is nothing to commit the branch is ahead of ```origin/master```. Git knows that this is a clone and is warning you that it is now ahead of the origin.
+We will try using the push command to propagate our commits to the remote repository as git recommends
 ```
 git push
 ```
@@ -136,8 +168,9 @@ Git is cowardly refusing to push changes because the remote branch ```origin mas
 The solution is to create a new repository branch on origin and switch to that branch before trying to push the changes from the clone. The solution will be given after the discussion of branches below.
 
 ### Git Branches
-Think of a git repository as being like a tree. Trees can have one or more branches. A tree also has a root. The root of the git repository tree is the initial commit. Initially the repository as a single branch and the tip of the branch is called ```master```. When we make a commit a new node is added to the branch, the previous commit node become its parent node and the new node becomes ```master```. It is also possible to create a new branch; in that case the parent of the branch is the last commit made before the branch was created. Two branches now exist and we can make commits to either branch -- each branch has a separate history after the time of the split. It is possible to merge the commits on the branches later if desired but there may be conflicting changes that will need to then be resolved. To create a new branch called ```new_test``` and switch the current repository to the new branch use the command
+Think of a git repository as being like a tree. Trees can have one or more branches. A tree also has a root. The root of the git repository tree is the initial commit. Initially the repository has a single branch and the tip of the branch is called ```master```. When we make a commit a new node is added to the branch, the previous commit node become its parent node and the new node becomes ```master```. It is also possible to create a new branch; in that case the parent of the branch is the last commit made before the branch was created. Two branches now exist and we can make commits to either branch -- each branch has a separate history after the time of the split. It is possible to merge the commits on the branches later if desired but there may be conflicting changes that will need to then be resolved. To create a new branch called ```new_test``` and switch the current repository to the new branch use the command
 ```
+cd ../../myproject
 git branch new_test
 git checkout new_test
 ```
@@ -153,11 +186,15 @@ lists all the current branches. For my repository this produces
 so there are now two branches ```master``` and ```new_test```. The current (active) branch is indicated by an asterisk (in this case ```new_test```). To switch back to the ```master```
 branch use the command
 ```
-git branch master
+git checkout master
 ```
+A branch that is not currently checked out can be deleted using the --delete option of the branch command. We can delete the ```new_test``` branch using
+```
+git branch --delete new_test
+```
+Be careful, any commits on the branch that have not been merged will be lost when the branch is deleted.
 It should now be clear how to solve our previous push problem -- create a new branch on ```origin``` and switch to it so that the ```master``` branch is no longer checked out
 ```
-cd ../../myproject
 git branch working
 git checkout working
 ```
@@ -170,7 +207,35 @@ git push
 The push should now have been a success and changes you made on the clone have now been propagated to the ```origin``` repository.
 
 ### Merging Git Branches
-Often it is useful to have at least two branches for each project: one that is the *stable* branch (often ```master```) which has the currently correct and useable versions of your files and another that is the *unstable* branch (for example ```working```) where you have the files that you are currently at work on. When the working files are completed and ready for the stable branch you merge them into that branch.
+Often it is useful to have at least two branches for each project: one that is the *stable* branch (often ```master```) which has the currently correct and useable versions of your files and another that is the *unstable* branch (for example ```working```) where you have the files that you are currently at work on. When the working files are completed and ready for the stable branch you merge them into that branch. If you are the only person working on the project and you always use the ```working``` branch for ongoing work and commits then there should be no changes or commits in the ```master``` directory since the last merge and therefore merging ```working``` into ```master``` is easy, it is simply replaying all the changes in ```working``` in the branch ```master```. As mentioned earlier this is called a *fast-forward* in git. We now try making some changes in our new branch of the ```myproject``` repository and merging them back into ```master```. Check out the ```working``` branch and use ed to create a new file
+```
+git checkout working
+ed
+a
+a fourth file
+.
+w test4.txt
+q
+git add test4.txt
+git commit -a -m "a fourth file was added"
+```
+Now try switching to the ```master``` branch and looking at the files
+```
+git checkout master
+ls
+```
+There should be a file in the master branch called ```test3.txt``` but the file ```test4.txt``` is not present, it is currently only present in the ```working``` branch. We now try merging the ```working``` branch back into the ```master``` branch
+```
+git merge working
+```
+This will produce the output
+```
+Merge made by the 'recursive' strategy.
+ test4.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test4.txt
+```
+Now try ```ls``` and you will see that ```test4.txt``` is part of the ```master``` branch. Also try ```git log```. You should see that the merge is listed in the log as well as the commit that was done in branch ```working```. One strategy is to never make direct changes to ```master``` and rely on merges to bring your changes into the ``master``` repository. If you try to merge a pair of branches that both include changes to the same files you will have to manually resolve any conflicts that occur in the modified files. We will not go into merge conflict resolution in this course. By following the strategy above you can avoid conflicts entirely. 
 
 ### Remote Repositories
 This tutorial is not quite over. Thus far, everything we have done with our git repositories has been on our local machine. You now have some great skills for file management. You know how to create a repository for your files, add files to the repository, commit your file changes, create one or more working (unstable) branches, merge the unstable branches back into the stable branch, and recover older versions of your work from previous commits. But what if your hard drive fails? You will lose your local git repository and all your work! You do not yet have a backup. It is quite possible to just create an archive of your git directory every evening (using tar for example) and then copy the archive to a remote machine (using sftp for example). That works strategy works, but you will need an account on a machine that allows you to store your data and copying a large tarred git directory every day may be slow (even if the tar archive is compressed). A more efficient strategy would be to use a tool like rsync that is specifically designed to allow incremental backups by synchronizing files between machines. But wouldn't it be better to make incremental backups of just the bits of files that have changed and do that every time you commit your git files so you are sure to have a backup of your current commits always? Yes it would, and git can help you do that (and it can be done for free!) -- the solution is to create a remote repository. 
