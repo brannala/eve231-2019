@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>unixtutorial.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="eve-231-unix-tutorial">EVE 231 UNIX Tutorial</h1>
+<h2 id="getting-information-and-manipulating-files">Getting information and manipulating files</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">UNIX Command</th>
+<th align="left">Description</th>
+<th align="left">Useful Options</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">who</td>
+<td align="left">List users that are logged in</td>
+<td align="left">-u -a</td>
+</tr>
+<tr class="even">
+<td align="left">pwd</td>
+<td align="left">Print working directory</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">ls</td>
+<td align="left">List files</td>
+<td align="left">-l -a</td>
+</tr>
+<tr class="even">
+<td align="left">tree</td>
+<td align="left">Show files and directories as a tree</td>
+<td align="left">-a -d</td>
+</tr>
+<tr class="odd">
+<td align="left">cd</td>
+<td align="left">Change directory</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">df</td>
+<td align="left">Show disk space</td>
+<td align="left">-l -h</td>
+</tr>
+<tr class="odd">
+<td align="left">du</td>
+<td align="left">Show directory size</td>
+<td align="left">-s -h --time</td>
+</tr>
+<tr class="even">
+<td align="left">cat</td>
+<td align="left">Print contents of file</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">mv</td>
+<td align="left">Move file</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">rm</td>
+<td align="left">Remove file</td>
+<td align="left">-R -f</td>
+</tr>
+<tr class="odd">
+<td align="left">rmdir</td>
+<td align="left">Remove directory (must be empty)</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">cp</td>
+<td align="left">Copy file</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">more</td>
+<td align="left">Display file contents sequentially</td>
+<td align="left">-n +n</td>
+</tr>
+<tr class="even">
+<td align="left">tail</td>
+<td align="left">Display contents from end of file</td>
+<td align="left">-n</td>
+</tr>
+<tr class="odd">
+<td align="left">mkdir</td>
+<td align="left">Create directory</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">wc</td>
+<td align="left">Count lines, words, etc</td>
+<td align="left">-l -w -m</td>
+</tr>
+<tr class="odd">
+<td align="left">diff</td>
+<td align="left">Get differences between files or directories</td>
+<td align="left">-q -s -y -r</td>
+</tr>
+<tr class="even">
+<td align="left">sort</td>
+<td align="left">Sort lines of file</td>
+<td align="left">-g</td>
+</tr>
+<tr class="odd">
+<td align="left">history</td>
+<td align="left">Display history of commands</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">!n</td>
+<td align="left">Execute command n from history</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">echo</td>
+<td align="left">Echos arguments</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="unix-processes-and-job-control">Unix processes and job control</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">UNIX Command</th>
+<th align="left">Description</th>
+<th align="left">Useful Options</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ps</td>
+<td align="left">List processes</td>
+<td align="left">-a -e</td>
+</tr>
+<tr class="even">
+<td align="left">htop</td>
+<td align="left">Graphical window with processes</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">top</td>
+<td align="left">Processes ranked by CPU usage</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">nice</td>
+<td align="left">Allow resource management of job</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">kill PID</td>
+<td align="left">kill process with PID</td>
+<td align="left">-9</td>
+</tr>
+</tbody>
+</table>
+<h2 id="modifying-file-permissions">Modifying File permissions</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Unix Command</th>
+<th align="left">Description</th>
+<th align="left">Useful Options</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">chmod</td>
+<td align="left">Change file mode</td>
+<td align="left">+x -x +r -r +w -w</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="unix-redirects-and-pipes">UNIX Redirects and Pipes</h2>
+<p>The UNIX philosophy states that programs should should do one thing well and that there should be no difference between outputting text to the screen or to a file. Similarly programs should not care whether inputs come from a terminal or a file. A redirect send the output of a program into a file rather than to the standard output (screen). For example the redirect operator <code>&gt;</code> redirects the output of a program to a file, either creating a new file or overwriting an existing file. The command</p>
+<pre><code>ls -lh &gt; dir.txt</code></pre>
+<p>prints the directory information to a file named dir.txt. The append operator <code>&gt;&gt;</code> either writes the output to the end of an existing file or creates a new file of none exists. A pipe <code>|</code> is used to take the output of one program and feed it as input into another program. For example,</p>
+<pre><code>ls -lh | grep bruce | wc -l</code></pre>
+<p>counts the number of files in the working directory that are owned by user bruce. We use the program grep to filter the <code>ls</code> output. It prints all the lines that contain the word bruce.</p>
+
+</body>
+</html>
