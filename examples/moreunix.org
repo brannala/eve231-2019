@@ -1,0 +1,45 @@
+* File permissions
+** Basic Introduction
+
+| Command | Explanation                                |   |
+|---------+--------------------------------------------+---|
+| ls -l   | long form list of files                    |   |
+| chmod   | changes permissions of a file or directory |   |
+| chgrp   | changes group of file                      |   |
+| chown   | changes owner of file                      |   |
+|         |                                            |   |
+|         |                                            |   |
+|         |                                            |   |
+|         |                                            |   |
+|         |                                            |   |
+
+Example ls -l output:
+
+-rw-rw-r-- 1 bruce bruce 0 Oct  1 01:02 test.txt
+
+| Category   | Operation                      | Permission             |
+|------------+--------------------------------+------------------------|
+| u = User   | + = Adds permission            | r = Read permission    |
+| g = Group  | - = Removes permission         | w = Write permission   |
+| o = Others | '=' = Adds absolute permission | x = Execute permission |
+| a = All    |                                |                        |
+|------------+--------------------------------+------------------------|
+
+drwxrwxr-x  7 bruce bruce 4096 Oct  1 00:51 eve231-2019
+| Command              | Explanation                                                    |
+|----------------------+----------------------------------------------------------------|
+| chmod g-r test.txt   | removes read permission for group bruce                        |
+| chmod u-w test.txt   | removes write permission for user bruce                        |
+| chmod ug+rw test.txt | adds read and write permissions for user bruce and group bruce |
+|----------------------+----------------------------------------------------------------|
+
+*** Octal Notation
+Read permission = 4
+Write permission = 2
+Execute permission = 1
+4+1 = 4
+4+2 = 6 = rw
+4+2+1 = 7 = rwx
+
+chmod 666 test.txt -> -r--r--r--
+chmod 251 test.txt -> --w-r-x--x
