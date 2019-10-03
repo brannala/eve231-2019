@@ -43,3 +43,55 @@ Execute permission = 1
 
 chmod 666 test.txt -> -r--r--r--
 chmod 251 test.txt -> --w-r-x--x
+
+* Looking at files
+** Basic Commands
+
+Identify file types:
+
+file ~/bin/*
+
+bin/begindryrsync: Bourne-Again shell script text executable, ASCII text
+bin/beginrsync:    Bourne-Again shell script text executable, ASCII text
+bin/bpp:           Mach-O 64-bit executable x86_64
+bin/enddryrsync:   Bourne-Again shell script text executable, ASCII text
+bin/endrsync:      Bourne-Again shell script text executable, ASCII text
+bin/getical:       Bourne-Again shell script text executable, ASCII text
+bin/getical.orig:  Bourne-Again shell script text executable, ASCII text
+bin/ical2org.py:   Python script text executable, ASCII text
+bin/importical.el: ASCII text
+bin/jekrun:        Bourne-Again shell script text executable, ASCII text
+bin/lucl:          Bourne-Again shell script text executable, ASCII text
+bin/mountsyn:      Bourne-Again shell script text executable, ASCII text
+bin/runsage:       Bourne-Again shell script text executable, ASCII text
+bin/sage:          Bourne-Again shell script text executable, ASCII text
+bin/siteupload:    Bourne-Again shell script text executable, ASCII text
+bin/unmountsyn:    Bourne-Again shell script text executable, ASCII text
+bin/webp:          ASCII text
+
+Compare text files:
+more text.txt
+cmp text.txt text2.txt
+diff -y test.txt test2.txt
+
+Create a file archive:
+
+Using the tar (tape archive) function:
+
+tar -cvf sand.tar sandbox
+
+Create a compressed file archive:
+
+tar -czvf sand.tgz sandbox
+
+Test unpack an uncompressed archive:
+ tar -tvf sand.tar
+
+Unpack an uncompressed archive:
+ tar -xvf sand.tar
+
+Unpack a compressed archive:
+ tar -xvzf sand.tgz
+
+Use zip and unzip for archiving and extracting zip files
+
