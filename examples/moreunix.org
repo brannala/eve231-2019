@@ -96,3 +96,48 @@ Unpack a compressed archive:
 Use zip and unzip for archiving and extracting zip files
 
 
+* Shell configuration files
+** Bash shell variables
+Shell variable names are all uppercase. If you place a dollar sign in front of the variable this references the value of the variable. To set the value of variable EDITOR in your current shell session to EMACS use
+
+export EDITOR=emacs
+
+To print the value of the variable EDITOR to screen use
+
+echo $EDITOR
+ 
+Use the echo command to print current values of shell variables:
+-- print the current shell
+
+echo $SHELL
+
+-- print the default editor
+
+echo $EDITOR
+
+-- print name of current user
+
+echo $USER
+
+Edit your bash shell configuration file (.bash_profile on Mac, .bashrc on Ubuntu)
+-- look at your current file:
+
+cd
+more .bash_profile
+
+-- open the bash file using emacs
+
+emacs .bash_profile
+
+-- then add the following lines
+
+# Add path to local binaries
+PATH=$PATH:$HOME/bin:/usr/local/bin
+# Set command prompt to user name
+PS1='$USER$'
+# Set default editor to emacs
+export EDITOR=emacs
+
+-- save the edited file using C-x C-s and quit emacs using C-x C-c
+
+The configuration file is only read at the start of a shell session so you need to close your terminal and open a new one.

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>emacstutorial.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="eve-231-emacs-tutorial">EVE 231 Emacs Tutorial</h1>
+<h2 id="getting-started">Getting Started</h2>
+<p>To start using Emacs open a unix terminal and type <code>emacs</code>. You will see a splash screen similar to the following that tells you the version of Emacs that you are using and some other useful information</p>
+<pre><code>Welcome to GNU Emacs, one component of the GNU/Linux operating system.                                                                                                              
+                                                                                                                                                                                    
+Get help           C-h  (Hold down CTRL and press h)                                                                                                                                
+Emacs manual       C-h r        Browse manuals     C-h i                                                                                                                            
+Emacs tutorial     C-h t        Undo changes       C-x u                                                                                                                            
+Buy manuals        C-h RET      Exit Emacs         C-x C-c                                                                                                                          
+Activate menubar   M-`                                                                                                                                                              
+(‘C-’ means use the CTRL key.  ‘M-’ means use the Meta (or Alt) key.                                                                                                                
+If you have no Meta key, you may instead type ESC followed by the character.)                                                                                                       
+Useful tasks:                                                                                                                                                                       
+Visit New File                  Open Home Directory                                                                                                                                 
+Customize Startup               Open *scratch* buffer                                                                                                                               
+                                                                                                                                                                                    
+GNU Emacs 26.3 (build 1, x86_64-pc-linux-gnu)                                                                                                                                       
+ of 2019-09-16                                                                                                                                                                      
+Copyright (C) 2019 Free Software Foundation, Inc.                                                                                                                                   
+                                                                                                                                                                                    
+GNU Emacs comes with ABSOLUTELY NO WARRANTY; type C-h C-w for full details.                                                                                                         
+Emacs is Free Software--Free as in Freedom--so you can redistribute copies                                                                                                          
+of Emacs and modify it; type C-h C-c to see the conditions.                                                                                                                         
+Type C-h C-o for information on getting the latest version.                                                                                                                         
+                                                                                                                                                                                    
+If an Emacs session crashed recently, type M-x recover-session RET                                                                                                                  
+to recover the files you were editing.  </code></pre>
+<p>The first thing you need to understand is that Emacs uses combinations of special keyboard keys to initiate Emacs commands. The two most important keys are the <code>Control</code> key symbolized as <code>C</code> and the <code>Meta</code> key symbolized as <code>M</code>. Thus <code>C-h</code> means hold down the <code>Control</code> key and press <code>h</code>. This initiates the Emacs help system. To read the Emacs manual the command is <code>C-h r</code> which means hold down the Control key and press <code>h</code>, then release and press <code>r</code>. The Meta key varies among keyboards/computers. On Linux machines the Meta key is usually the <code>Alt</code> key. On the Mac OS X it is usually either the <code>Option</code> or <code>Command</code> key. For example, if the cursor is at the beginning of a word you can delete the word with the command <code>M-d</code> which could be executed on a Linux machine by holding down the <code>Alt</code> key and pressing <code>d</code>. On any computer you can also use the <code>ESC</code> key in place of the Meta key. However, if you do that don't continue to hold down the ESC just press it once. Three commands are particularly useful: <code>C-x u</code> which will undo the previous command and can be applied recursively to go back several commands, <code>C-g</code> which aborts whatever command you are running, and <code>C-x C-c</code> which exits Emacs.</p>
+<h3 id="exercise-1">Exercise 1</h3>
+<p>Work through the Emacs tutorial which should take about 30 minutes. To start the Emacs tutorial type the command <code>C-h t</code>.</p>
+<h3 id="emacs-resources">Emacs Resources</h3>
+<p>It will take some time before you start to remember the literally hundreds of key combinations that are basic Emacs commands. Until you do (if ever) you may find an Emacs Reference Card (or &quot;cheat sheet&quot;) helpful. A Emacs cheat sheet summarizes the key-combinations for commonly used Emacs commands. A Reference Card can be downloaded <a href="https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf">here</a>. You can also read the Emacs manual using <code>C-h m</code>. If you are serious about mastering Emacs you should try to use it daily (ideally for most or all of your work).</p>
+<h2 id="emacs-modes">Emacs Modes</h2>
+<p>Emacs modes are libraries of lisp code that extend or modify the behavior of Emacs. There are major and minor modes. Only one major mode can be active in any buffer but several minor modes can be active simultaneously. Many of the major modes provide syntax highlighting and other features for programming languages such as C or Python. Others provide specific functionalities, such as spell checking. Emacs modes are usually distributed as packages. Some packages are installed by default, others must be installed by the user. Certain file suffixes will automatically trigger a mode in Emacs. However, a mode can also be initialized manually using <code>M-x mode-name</code>. You can not turn-off a major mode once it is active because every buffer has to have exactly one major mode and turning off the current major mode would leave the buffer with no major mode. The correct thing to do is to switch to another mode. You can view the documentation for the major mode of the current buffer by typing <code>C-h m</code>.</p>
+<h3 id="exercise-2">Exercise 2</h3>
+<p>Create a new file called myfile.txt using the command</p>
+<pre><code>C-x f myfile.txt</code></pre>
+<p>Type a few lines of text into the file and save it using <code>C-x s</code>. Then examine the mode that is being used by using the command <code>C-h m</code>. This will open up a second window with the help file for the major mode. Switch to the other window using <code>C-x o</code>. To close the help buffer type <code>q</code> when in the help buffer.</p>
+<h2 id="windows-in-emacs">Windows in Emacs</h2>
+<p>You can have multiple Emacs windows open in a single terminal and the windows can contain different buffers. This allows you to multitask and there are key commands for switching between buffers. To split a window horizontally type <code>C-x 2</code> and to split vertically type <code>C-x 3</code>. The cursor is in the active window. The command <code>C-x o</code> switches the active window. Any commands you type apply only to the active window.</p>
+<h3 id="exercise-3">Exercise 3</h3>
+<p>Using the command <code>C-x 2</code> split the current window. Switch to the second window using <code>C-x o</code>. Create a new file</p>
+<pre><code>C-x f myfile2.txt</code></pre>
+<p>Enter some text into the file. Then move to the other window and enter some more text into file test.txt. Save the changes in both files using <code>C-x s</code>. Close the file in the active buffer using <code>C-x  k</code>.</p>
+
+</body>
+</html>
