@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>shelltutorial.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="eve-231-lecture-4-tues-oct-8">EVE 231 Lecture 4 (Tues Oct 8)</h1>
+<h2 id="custom-unix-commands-via-alias-and-bash-shell-scripts">Custom UNIX Commands via Alias and Bash Shell Scripts</h2>
+<h3 id="creating-a-new-unix-command-using-alias">Creating a new UNIX command using alias</h3>
+<p>An alias is a custom command usually used to call a longer UNIX command. Here is an example of a bash alias</p>
+<pre><code>alias c=&#39;clear&#39;</code></pre>
+<p>This will create a new command <code>c</code> that clears the screen. It is easier to type <code>c</code> that it is to type <code>clear</code> if you frequently need to clear your screen. You can remove the alias using the command</p>
+<pre><code>unalias c</code></pre>
+<p>If you want to use an alias just for your current session then enter it at the command line as shown above. It will disappear when you leave the terminal (shell) session. On the other hand if you want a permanent alias put it into your .bash_profile or .bashrc file and it will be available every time you open a bash shell. For example, I frequently connect to my fat node lab server using ssh so I have a permanent alias for this in my .bashrc file</p>
+<pre><code>alias gofat=&#39;ssh bruce@fatty&#39;</code></pre>
+<p>I don't need to give the full name or ip address for this machine because I have linked the name fatty to the machine's ip address by adding a line to the <code>/etc/hosts</code> file on my computer (you need to use sudo to edit <code>/etc/hosts</code>). Once defined unix will also auto-complete the names of aliases so I can call this command with gof (TAB) as well. You can see a list of all your currently defined aliases by typing <code>alias</code> with no arguments.</p>
+<h3 id="creating-a-shell-script">Creating a shell script</h3>
+<p>If you need to repeatedly eexcute a set of UNIX commands that require several lines and or takes variable input you should write a bash shell script rather than create an alias. My recommendation is that you create a subdirectory named ~/bin that will contain all your shell scripts and add the directory to PATH in your .bashrc or .bash_profile file. We will start with a simple script that just prints 'Hello World!' to the screen when it is called. Type <code>emacs ~/bin/hello</code> to create the file and edit it in emacs. Enter the following contents into the file and save it.</p>
+<pre><code>#!/bin/bash
+
+# my first shell script
+echo Hello World!</code></pre>
+<p>The first line of the file tells bash what shell to use to run the script (the bash shell executable is located at /bin/bash on most UNIX installations). The so-called shebang symbol <code>#!</code> must precede the path to the shell executable file. Comments can be included elsewhere in the script using the <code>#</code> symbol at the beginning of the comment line. Before we can run this script we must give ourselves executable privileges</p>
+<pre><code>chown u+x ~/bin/hello</code></pre>
+<p>The program can now be executed by typing <code>hello</code>. If that produces an error message it may be because <code>~/bin</code> is not in your PATH variable. Try <code>~/bin/hello</code> instead or add <code>~/bin</code> to PATH. So far, we have done nothing that we could not easily have done using alias. For example, <code>alias hello='echo Hello World!'</code> would have accomplished the same thing. What is we want a more personalized hello? Modify the shell script to instead be</p>
+<pre><code>#!/bin/bash
+
+# my second shell script
+echo Hello $1 $2!</code></pre>
+<p>The <code>$1</code> specifies the value contained in the first command line argument and $2 is the second. Now try running the script again with some arguments</p>
+<pre><code>hello Bruce Rannala</code></pre>
+<p>This returns</p>
+<pre><code>Hello Bruce Rannala!</code></pre>
+<p>This shell script takes command line arguments. But what if no argument is provided? You can add an if statement to handle that situation gracefully</p>
+<pre><code>#!/bin/bash
+
+# my second shell script
+if [ -z &quot;$1&quot; ]
+then
+    echo Hello mystery person!
+else
+    echo Hello $1 $2!
+fi
+</code></pre>
+<p>You can also make a script interactive, awaiting a response from the user</p>
+<pre><code>#!/bin/bash
+
+# my third shell script
+echo What is your name?
+read name
+if [ -z &quot;$name&quot; ]
+then
+    echo You have no name!
+else
+    echo Hello $name!
+fi</code></pre>
+<p>Here is a practical script that adds, commits and pushes all the files in a directory to a remote git repository</p>
+<pre><code>#!/bin/bash
+
+read -r -p &#39;Commit message: &#39; desc  # prompt user for commit message
+git add .                           # track all files
+git add -u                          # track deletes
+git commit -m &quot;$desc&quot;               # commit with message
+git push origin master              # push to origin</code></pre>
+<p>All the UNIX commands that work in the bash shell can be used in a bash shell script. Any time you notice that you are repeatedly typing the same combinations of commands you should consider defining an alias or writing a bash script to make your life easier.</p>
+<h3 id="exercise-1">Exercise 1</h3>
+<p>Write a shell script that creates a compressed tar archive (a.k.a tarball) that contains all your important configuration scripts and subdirectories with software configurations (I suggest including at least .bashrc [or .bash_profile] and the subdirectory .emacs.d). This could be useful if you are working on another UNIX machine such as a server in your lab.</p>
+
+</body>
+</html>
