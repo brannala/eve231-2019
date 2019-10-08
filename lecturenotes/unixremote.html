@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>unixremote.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="connecting-to-a-remote-machine-and-transferring-files-in-unix">Connecting to a Remote Machine and Transferring Files in UNIX</h1>
+<h2 id="logging-into-a-shell-on-a-remote-machine">Logging into a shell on a remote machine</h2>
+<p>There is an account on my server for you to try logging into. We will use the secure shell (ssh) to connect to the machine. This is a terminal connection protocol with an encrypted tunnel that replaces an unsafe older plain text protocol called telnet. Type the following command</p>
+<pre><code>ssh eve131@ipaddress</code></pre>
+<p>You will be prompted for a password that I will write on the board during class along with the ipaddress. You will all be logged into the same account so create a subdirectory for your own use. Here <code>yourname</code> is your first name</p>
+<pre><code>mkdir yourname</code></pre>
+<p>If you type <code>ls</code> you should see your subdirectory, a subdirectory called evetest, and possibly other subdirectories created by other students (recognize any names?). All the UNIX commands work in the bash shell on this remote machine as they would on your local machine. Now log out of your session by using the command</p>
+<pre><code>logout</code></pre>
+<h2 id="transferring-files-to-and-from-and-remote-machine">Transferring files to and from and remote machine</h2>
+<p>We will now try transferring some files from the remote machine to your local machine. There is a file called eve313.tar that you will copy to your local machine -- we will do that using a few different programs. We will first use the Secure Copy Protocol which uses an encrypted connection like ssh. Type the command</p>
+<pre><code>scp eve131@ipaddress:~/evetest.tar ~/</code></pre>
+<p>This copies the <code>evetest.tar</code> file from the home directory of user eve131 into the home directory on your local machine. Test dearchive the file to ensure that it was transferred without corruption</p>
+<pre><code>tar -tvf ~/evetest.tar</code></pre>
+<p>We will now try an interactive transfer using the Secure File Transfer Protocol which is an encrypted version of the older plain text FTP program. Firs log into the remote machine</p>
+<pre><code>sftp eve131@ipaddress</code></pre>
+<p>Then transfer the file with the get command and then quit</p>
+<pre><code>get evetest.tar
+quit</code></pre>
+<p>The file should now be in your current working directory. We will now upload the file evetest.tar into the local subdirectory <code>~/yourname</code> on the remote machine. First we will use scp</p>
+<pre><code>scp evetest.tar eve131@ipaddress:~/yourname/</code></pre>
+<p>The scp program can also copy files and directories recursively to (or from) a remote machine. To illustrate this first dearchive the evetest.tar file into your home directory</p>
+<pre><code>tar -xvf evetest.tar</code></pre>
+<p>This creates a hierarchical set of directories and files. To see them type <code>tree ~/evetest</code>. We will recursively copy the files and directories to subdirectory <code>~/yourname/</code> on the remote machine</p>
+<pre><code>scp -r ~/evetest/ eve131@ipaddress:~/yourname/</code></pre>
+<p>Now log back into the remote machine and you should find the subdirectories and files in your personal folder.</p>
+
+</body>
+</html>
