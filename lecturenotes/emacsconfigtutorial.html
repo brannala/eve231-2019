@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>emacsconfigtutorial.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="basic-configuration-of-emacs">Basic Configuration of Emacs</h1>
+<p>The behavior of Emacs can be customized to a near limitless degree. This is done by adding configuration commands (written in the elisp programming language of course) to the Emacs configuration file. This file is called <code>init.el</code> and is located in the hidden directory <code>.emacs.d</code> in the users home directory. Try typing</p>
+<pre><code>ls ~/.emacs.d/</code></pre>
+<p>to view the contents of your <code>.emacs.d</code> folder. By default there is no <code>init.el</code> file. We will add one with the following contents</p>
+<pre class="elisp"><code>(require &#39;package)
+(let* ((no-ssl (and (memq system-type &#39;(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl &quot;http&quot; &quot;https&quot;)))
+
+(add-to-list &#39;package-archives (cons &quot;melpa&quot; (concat proto &quot;://melpa.org/packages/&quot;)) t)
+
+(when (&lt; emacs-major-version 24)
+;; For important compatibility libraries like cl-lib
+(add-to-list &#39;package-archives (cons &quot;gnu&quot; (concat proto &quot;://elpa.gnu.org/packages/&quot;)))))
+(package-initialize)
+
+;; add a nice deep blue color scheme
+(load-theme &#39;deeper-blue)
+
+;; make the default mode text
+(setq-default major-mode &#39;text-mode)
+
+;; add key combination for search replace with regexp
+(global-set-key (kbd &quot;C-c C-r e&quot;) &#39;query-replace-regexp)
+
+;; show current time 
+(display-time-mode 1) 
+    
+;; define your location
+(setq calendar-lattitude 38.86)
+(setq calendar-longitude -121.78)
+(setq calendar-location-name &quot;Knights Landing, CA&quot;)
+
+;; match parentheses
+(show-paren-mode 1)</code></pre>
+<p>I have placed an <code>init.el</code> in the <code>examples</code> directory of the eve231 github repository. Clone or pull the site to get the latest files then copy <code>init.el</code> to the <code>.emacs.d</code> directory. Now start emacs. Has its appearance changed? We will now install the Emacs Speaks Statistics (ESS) package. To open the package manager type</p>
+<pre><code>M-x list-packages</code></pre>
+<p>A list of packages should appear. Type <code>C-s Statistics</code> to search for ESS. If you have not found it yet press <code>C-s</code> again. If you have found ESS press Enter to end the search. With the cursor on the line for the ESS package press <code>i</code> to select the package for installation then press <code>x</code> to execute the installation procedure. When it has competed press <code>q</code> to quite the package manager. ESS is now installed. I have placed an R script in the <code>scripts</code> directory on the course repository. The file is called <code>EVE231RScript.R</code>. Open the script using <code>C-x f</code>. Emacs should automatically enter ESS mode.</p>
+
+</body>
+</html>

@@ -38,3 +38,8 @@ to view the contents of your ```.emacs.d``` folder. By default there is no ```in
 ;; match parentheses
 (show-paren-mode 1)
 ```
+I have placed an ```init.el``` in the ```examples``` directory of the eve231 github repository. Clone or pull the site to get the latest files then copy ```init.el``` to the ```.emacs.d``` directory. Now start emacs. Has its appearance changed? We will now install the Emacs Speaks Statistics (ESS) package. To open the package manager type
+```
+M-x list-packages
+```
+A list of packages should appear. Type ```C-s Statistics``` to search for ESS. If you have not found it yet press ```C-s``` again. If you have found ESS press Enter to end the search. With the cursor on the line for the ESS package press ```i``` to select the package for installation then press ```x``` to execute the installation procedure. When it has competed press ```q``` to quite the package manager. ESS is now installed. I have placed an R script in the ```scripts``` directory on the course repository. The file is called ```EVE231RScript.R```. Open the script using ```C-x f```. Emacs should automatically enter ESS mode. 
