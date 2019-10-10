@@ -1,0 +1,150 @@
+*** UNIX filters
+**** filtering with grep
+
+The grep tool is an example of a UNIX filter. It returns all lines of a file that contain a query sequence. The syntax for grep is:
+
+grep <query term> <filename>
+
+Try the following:
+
+ls -lh > temp.txt
+grep dr temp.txt
+
+This should print a list of details for all the directories in your current directory. If there are none (the directory only contains
+files) then grep returns nothing. Here we have created a file by redirecting the output of the command ls -lh. We could also just
+pipe the output of ls -lh directly into grep:
+
+ls -lh | grep dr
+
+Such output filtering is the most common use of grep in UNIX. For example, to see all processes running on my machine I can type:
+
+ps -aux
+
+but this produces a huge list. What if I am looking for a process called init (this is the master process of the UNIX kernel and 
+always has process ID 1. Try this:
+
+ps -aux | grep init
+
+This produces two lines: One is the init process and the other is the grep command itself. I can restrict output to the init
+process by adding a second condition (that the process is owned by root) using a second pipe to grep:
+
+ps -aux | grep init | grep root
+
+Now I get only the process init in the output. Grep has many options try man grep. A nice use of grep is finding information about
+specific UNIX command options in man pages. For example, to read abut option -Z in grep use:
+
+man grep | grep -A3 -B3 -- -Z
+
+which gives three lines of content before and after each occurrence of -Z in the man file. The -- escapes the special character
+- so that grep treats it as a search term rather than a grep option.
+
+*** other UNIX filters
+
+There are many UNIX filters for different things. Another useful filter (that my need to be installed on your machine) is ispell or aspell.
+I use aspell. Here is a simple filter that lists misspelled words:
+
+echo junke junk house hoose > junk.txt
+cat junk.txt | aspell list
+
+Or you can interactively correct words:
+
+aspell check junk.txt
+
+The sed program is a filter that finds and replaces characters, words, etc. Here is a simple example that changes the appearance of the 
+output from ls -lh:
+
+ls -lh | sed 's/:/|/'
+
+This replaces : with |.
+
+*** Regular expressions
+-- introduction
+A regular expression specifies a pattern rather than a specific word or character. Here is a list of some pattern specifiers used by Emacs and egrep:
+
+ .        any character (but newline)
+  *        previous character or group, repeated 0 or more time
+  +        previous character or group, repeated 1 or more time
+  ?        previous character or group, repeated 0 or 1 time
+  ^        start of line
+  $        end of line
+  [...]    any character between brackets
+  [^..]    any character not in the brackets
+  [a-z]    any character between a and z
+  \        prevents interpretation of following special char
+  \|       or
+  \w       word constituent
+  \b       word boundary
+  \sc      character with c syntax (e.g. \s- for whitespace char)
+  \( \)    start/end of group
+  \&lt; \&gt;    start/end of word (faulty rendering: backslash + less-than and backslash + greater-than)
+  \_< \_>  start/end of symbol
+  \` \'    start/end of buffer/string
+  \1       string matched by the first group
+  \n       string matched by the nth group
+  \{3\}    previous character or group, repeated 3 times
+  \{3,\}   previous character or group, repeated 3 or more times
+  \{3,6\}  previous character or group, repeated 3 to 6 times
+  \=       match succeeds if it is located at point
+
+
+**** using Regex with Emacs and egrep
+
+For example, to get a list that includes only directories we could use:
+
+ls -lh | egrep ^d
+
+this specifies that a d must occur at the beginning of the filename.
+To list only directories writeable by the group members you could use:
+
+ls -lh | egrep ^d....w
+
+Regex is incredibly powerful but difficult to remember and it takes practice to get good at 
+manipulating expressions using Regex. There are many online Regex testers that you can use 
+to practice or test your patterns. 
+
+*** Simple Emacs Configuration
+
+The behavior of Emacs can be customized to a near limitless degree. This is done by adding configuration commands (written in the elisp programming language of course)
+to the Emacs configuration file. This file is called ```init.el``` and is located in the hidden directory ```.emacs.d``` in the users home directory. Try typing
+```
+ls ~/.emacs.d/
+```
+to view the contents of your ```.emacs.d``` folder. By default there is no ```init.el``` file. We will add one with the following contents
+```elisp
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+
+(add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+
+(when (< emacs-major-version 24)
+;; For important compatibility libraries like cl-lib
+(add-to-list 'package-archives (cons "gnu" (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+
+;; add a nice deep blue color scheme
+(load-theme 'deeper-blue)
+
+;; make the default mode text
+(setq-default major-mode 'text-mode)
+
+;; add key combination for search replace with regexp
+(global-set-key (kbd "C-c C-r e") 'query-replace-regexp)
+
+;; show current time 
+(display-time-mode 1) 
+    
+;; define your location
+(setq calendar-lattitude 38.86)
+(setq calendar-longitude -121.78)
+(setq calendar-location-name "Knights Landing, CA")
+
+;; match parentheses
+(show-paren-mode 1)
+```
+I have placed an ```init.el``` in the ```examples``` directory of the eve231 github repository. Clone or pull the site to get the latest files then copy ```init.el``` to the ```.emacs.d``` directory. Now start emacs. Has its appearance changed? We will now install the Emacs Speaks Statistics (ESS) package. To open the package manager type
+```
+M-x list-packages
+```
+A list of packages should appear. Type ```C-s Statistics``` to search for ESS. If you have not found it yet press ```C-s``` again. If you have found ESS press Enter to end the search. With the cursor on the line for the ESS package press ```i``` to select the package for installation then press ```x``` to execute the installation procedure. When it has competed press ```q``` to quite the package manager. ESS is now installed. I have placed an R script in the ```scripts``` directory on the course repository. The file is called ```EVE231RScript.R```. Open the script using ```C-x f```. Emacs should automatically enter ESS mode. 
