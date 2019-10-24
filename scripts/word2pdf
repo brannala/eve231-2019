@@ -1,0 +1,8 @@
+#!/bin/bash
+
+soffice --headless --convert-to pdf "./$1"
+
+filename=$(basename -- "$1")
+#extension="${filename##*.}"
+filename="${filename%.*}"
+evince "${filename}.pdf"
